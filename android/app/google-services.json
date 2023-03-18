@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "56777698338",
+    "project_id": "blocauth-23a11",
+    "storage_bucket": "blocauth-23a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56777698338:android:6a4b2574f1f6b652b06e7b",
+        "android_client_info": {
+          "package_name": "com.example.joblancer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56777698338-4lfpavbagj770dkeq8vhgh1qmilk7ai9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyd9u8168k2k9PvpgP0IFN19Xmt4QXlo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56777698338-4lfpavbagj770dkeq8vhgh1qmilk7ai9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
