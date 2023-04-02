@@ -2,16 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:joblancer/const.dart';
-import 'package:joblancer/home/postModel.dart';
+import 'package:joblancer/home/models/postModel.dart';
+import 'package:joblancer/home/submitProposal.dart';
 
 class Details extends StatefulWidget {
-  const Details({super.key});
+  const Details({super.key, required this.posts});
+
+  final Post posts;
 
   @override
   State<Details> createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -20,7 +24,7 @@ class _DetailsState extends State<Details> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          toolbarHeight: 70,
+          toolbarHeight: 40,
           leading: GestureDetector(
             onTap: () {
               Get.back();
@@ -31,160 +35,141 @@ class _DetailsState extends State<Details> {
             ),
           ),
           title: const Text(
-            "Job Details",
-            style: TextStyle(color: Color(0xff313131)),
+            "",
+            // style: TextStyle(color: Color(0xff313131)),
+            style: TextStyle(color: Colors.white),
           ),
         ),
-        body: StreamBuilder<List<Post>>(
-          stream: readPosts(),
-          builder: ((context, snapshot) {
-            if (snapshot.hasError) {
-              return Text("Something went wrong ${snapshot.error}");
-            } else if (snapshot.hasData) {
-              final posts = snapshot.data;
-              return SingleChildScrollView(
+        body: Stack(
+          children: [
+            Container(
+              margin:const EdgeInsets.only(top: 10),
+              height: size.height,
+              width: size.width,
+              child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.symmetric(horizontal: size.width*0.05),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Container(
+                        margin:const EdgeInsets.symmetric(vertical: 10),
+                        height: size.height*0.05,
+                        width: size.width*0.29,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset("assets/pin.png"),
+                            ),
+                            const Text("Prishtina")
+                          ],
+                        ),
+                      ),
+                      Text(widget.posts.title, style: const TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                      const Text("Posted 1 hours ago",),
+                      SizedBox(height: size.height*0.02,),
                       Row(
                         children: [
                           Container(
-                            margin: const EdgeInsets.all(10),
-                            height: size.height * 0.1,
-                            width: size.width * 0.2,
+                            height: size.height*0.06,
+                            width: size.width*0.27,
+                            margin:const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: primaryPurple),
-                          ),
-                          const Flexible(
-                            child: Text(
-                              "Looking for Figma designer for GAMING THEME with potential long term position",
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: black),
+                              border: Border.all(width: 1,color: primaryPurple.withOpacity(0.5)),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                 Text('\$ ${widget.posts.budget}',style:const TextStyle(fontWeight: FontWeight.w700),),
+                                Text("Fixed-price",style: TextStyle(color: Colors.grey[600]),)
+                              ],
                             ),
                           ),
+                          Container(
+                            margin:const EdgeInsets.all(5),
+                            height: size.height*0.06,
+                            width: size.width*0.27,
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1,color: primaryPurple.withOpacity(0.5)),
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('\$290',style: TextStyle(fontWeight: FontWeight.w700),),
+                                Text("Fixed-price",style: TextStyle(color: Colors.grey[600]),)
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin:const EdgeInsets.all(5),
+                            height: size.height*0.06,
+                            width: size.width*0.27,
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1,color: primaryPurple.withOpacity(0.5)),
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('\$290',style: TextStyle(fontWeight: FontWeight.w700),),
+                                Text("Fixed-price",style: TextStyle(color: Colors.grey[600]),)
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Project overview",
-                          style: TextStyle(
-                              color: black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
+                      SizedBox(height: size.height*0.02),
+                      const Text("Job description",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                      SizedBox(
+                        height: size.height*0.02,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          posts![1].description,
-                          style: TextStyle(
-                            height: 1.3,
-                            wordSpacing: 1.2,
-                          ),
-                        ),
+                      Text(widget.posts.description, style:const TextStyle(height: 1.3),),
+                      SizedBox(
+                        height: size.height*0.02,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Skills and expertise",
-                          style: TextStyle(
-                              color: black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
+                      const Text("Requirements",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                      Text(widget.posts.requirements,style:const TextStyle(height: 1.3)),
+                      SizedBox(
+                        height: size.height*0.02,
                       ),
-                      GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 20,
-                            childAspectRatio: 1,
-                            mainAxisExtent: 130,
-                            crossAxisSpacing: 10,
-                          ),
-                          itemCount: 7,
-                          itemBuilder: ((context, index) {
-                            return Container(
-                              width: size.width * 0.1,
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 30,
-                              ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: primaryPurple.withOpacity(0.3)),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Center(
-                                  child: Text(
-                                    "Skill",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            );
-                          })),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Detail Project",
-                          style: TextStyle(
-                              color: black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 10),
-                        child: Text(
-                          "5.00 of 48 reviews",
-                          style: TextStyle(color: black, fontSize: 15),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.star_outlined,
-                              color: Colors.amber[600],
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber[600],
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber[600],
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber[600],
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber[600],
-                            )
-                          ],
-                        ),
-                      )
+                      const Text("Attachments",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     ],
                   ),
                 ),
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          }),
+              ),
+            ),
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: (){
+                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>SubmitProposal(posts: widget.posts)));
+                  Get.toNamed("/login");
+                },
+                child: Container(
+                  height: size.height*0.07,
+                  width: size.width*0.4,
+                  margin: EdgeInsets.symmetric(horizontal: size.width*0.2),
+                  decoration: BoxDecoration(
+                    color: primaryPurple,
+                    borderRadius: BorderRadius.circular(35)
+                  ),
+                  child:const Center(child: Text("Apply",style: TextStyle(color: Colors.white,fontSize: 18),)),
+                ),
+              ),
+            )
+          ],
         ));
   }
 

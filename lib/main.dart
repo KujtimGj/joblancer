@@ -1,25 +1,30 @@
 import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:joblancer/AuthUI/employersignup.dart';
 import 'package:joblancer/AuthUI/login.dart';
+import 'package:joblancer/AuthUI/options.dart';
 import 'package:joblancer/AuthUI/signup.dart';
 import 'package:joblancer/AuthUI/welcome.dart';
 import 'package:joblancer/become_a_freelancer.dart';
 import 'package:joblancer/const.dart';
-import 'package:joblancer/home/details.dart';
 import 'package:joblancer/home/home.dart';
 import 'package:joblancer/nav/messages.dart';
-import 'package:joblancer/nav/taskboard.dart';
-import 'package:joblancer/nav/trophy.dart';
-import 'package:joblancer/nav/wallet.dart';
+import 'package:joblancer/nav/category.dart';
+import 'package:joblancer/nav/saved.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:joblancer/provider/internet_provider.dart';
 import 'package:joblancer/provider/sign_in_provider.dart';
+import 'package:joblancer/sidenav/account.dart';
+import 'package:joblancer/sidenav/profilechoice.dart';
+import 'package:joblancer/sidenav/tac.dart';
+import 'package:joblancer/sidenav/variants/signedin_nav.dart';
+import 'package:joblancer/sidenav/variants/signedoutnav.dart';
 import 'package:provider/provider.dart';
+import 'AuthUI/companysignup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +35,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +48,19 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(fontFamily: GoogleFonts.montserrat().toString()),
         debugShowCheckedModeBanner: false,
         getPages: [
-          GetPage(name: "/home", page: () => const Home()),
           GetPage(name: "/login", page: () => const Login()),
           GetPage(name: "/signup", page: () => const Signup()),
           GetPage(name: "/welcome", page: () => const Welcome()),
-          GetPage(name: "/body", page: () => const Body()),
           GetPage(name: "/root", page: () => const MyHomePage()),
           GetPage(name: "/freelancer", page: () => const BecomeFreelancer()),
-          GetPage(name: "/details", page: () => const Details())
+          GetPage(name: "/account", page: ()=>const Account()),
+          GetPage(name: "/options", page: ()=>const Options()),
+          GetPage(name: "/companysignup", page: ()=> const CompanySignUp()),
+          GetPage(name: "/employersignup", page: ()=>const EmployerSignup()),
+          GetPage(name: "/profilechoice", page: ()=>const ProfileChoice()),
+          GetPage(name: "/tac", page: ()=>const TermsAndConditions()),
         ],
-        home: const MyHomePage(),
+        home: const Welcome(),
       ),
     );
   }
@@ -59,6 +68,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends GetView<MyDrawerController> {
   const MyHomePage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,219 +104,12 @@ class MenuScreen extends GetView<MyDrawerController> {
     final sp = context.watch<SignInProvider>();
     return Scaffold(
       backgroundColor: const Color(0xfff8f8f8),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: size.height * 0.2,
-              width: size.width * 0.2,
-              child: CircleAvatar(
-                child: Image.network(
-                  '${sp.imageUrl}',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const Text(
-              "Hello",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2),
-            ),
-            Text(
-              "${sp.name}",
-              style: const TextStyle(
-                  color: primaryPurple,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.home_filled,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Home",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.account_circle_rounded,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Profile",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.file_present,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "All projects",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.home_filled,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Messages",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.price_change,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Offers",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.wallet,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Wallet",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.favorite,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Favorites",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed("/freelancer");
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.assignment_ind_rounded,
-                      color: primaryGrey,
-                      size: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Become a freelancer",
-                        style: TextStyle(),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.call,
-                    color: primaryGrey,
-                    size: 30,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Contact us",
-                      style: TextStyle(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: sp.isSignedIn?SignedInNav(sp: sp):SignedOutNav(sp: sp),
     );
   }
 }
+
+
 
 class MyDrawerController extends GetxController {
   final zoomDrawerController = ZoomDrawerController();
@@ -319,7 +122,9 @@ class MyDrawerController extends GetxController {
 }
 
 class Body extends StatefulWidget {
-  const Body({super.key});
+
+
+  const Body({super.key,required });
 
   @override
   State<Body> createState() => _BodyState();
@@ -328,11 +133,10 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    const Home(),
-    const Trophy(),
-    const TaskBoard(),
+     const Home(),
+    const Category(),
+    const Saved(),
     const Chat(),
-    const Wallet(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -360,10 +164,9 @@ class _BodyState extends State<Body> {
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.star), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.task), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.message), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.wallet), label: '')
+            BottomNavigationBarItem(icon: Icon(Icons.category), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.message), label: '')
           ],
         ),
       ),

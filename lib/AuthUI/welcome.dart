@@ -50,54 +50,56 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "Platform that includes Freelancer\nexperts in all IT specialities",
+                  "Platform that includes Freelancer\nexperts in all specialities",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 15),
+                      fontSize: 16),
                 ),
               ],
             ),
             Column(
               children: [
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.toNamed("/login");
+                //   },
+                //   child: Container(
+                //     height: size.height * 0.07,
+                //     width: size.width * 0.9,
+                //     margin: const EdgeInsets.all(10),
+                //     decoration: BoxDecoration(
+                //         color: primaryPurple,
+                //         borderRadius: BorderRadius.circular(15)),
+                //     child: const Center(
+                //         child: Text(
+                //       "Login",
+                //       style: TextStyle(
+                //           color: white,
+                //           fontSize: 18,
+                //           fontWeight: FontWeight.w600,
+                //           letterSpacing: 1),
+                //     )),
+                //   ),
+                // ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed("/login");
+                    Get.toNamed("/root");
                   },
                   child: Container(
                     height: size.height * 0.07,
                     width: size.width * 0.9,
                     margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: primaryPurple,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: const Center(
-                        child: Text(
-                      "Login",
-                      style: TextStyle(
-                          color: white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1),
-                    )),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed("/signup");
-                  },
-                  child: Container(
-                    height: size.height * 0.07,
-                    width: size.width * 0.9,
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
+                      color: primaryPurple,
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white, width: 1)),
+                        // border: Border.all(color: Colors.white, width: 1)
+                    ),
                     child: const Center(
                         child: Text(
-                      "Signup",
-                      style: TextStyle(color: white, fontSize: 18),
+                      "Welcome",
+                      style: TextStyle(color: white, fontSize: 19),
                     )),
                   ),
                 )
@@ -109,3 +111,27 @@ class Welcome extends StatelessWidget {
     );
   }
 }
+
+
+// GestureDetector(
+// onTap: () {
+// Get.toNamed("/login");
+// },
+// child: Container(
+// height: size.height * 0.07,
+// width: size.width * 0.9,
+// margin: const EdgeInsets.all(10),
+// decoration: BoxDecoration(
+// color: primaryPurple,
+// borderRadius: BorderRadius.circular(15)),
+// child: const Center(
+// child: Text(
+// "Login",
+// style: TextStyle(
+// color: white,
+// fontSize: 18,
+// fontWeight: FontWeight.w600,
+// letterSpacing: 1),
+// )),
+// ),
+// ),

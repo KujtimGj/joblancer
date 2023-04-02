@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:joblancer/const.dart';
-import 'package:joblancer/home/postModel.dart';
+import 'package:joblancer/home/models/postModel.dart';
 import 'package:joblancer/main.dart';
 
 class BecomeFreelancer extends StatefulWidget {
@@ -18,6 +19,7 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController payment_typeController = TextEditingController();
   final TextEditingController deadlineController = TextEditingController();
+  final TextEditingController requirementsController = TextEditingController();
 
   String error = "";
   String publisherError = "";
@@ -26,6 +28,40 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
   String descriptionError = "";
   String deadlineError = "";
   String budgetError = "";
+  String requirementsError = "";
+
+  final List<String> city = [
+    'Prishtina',
+    'Prizren',
+    'Peja',
+    'Gjilan',
+    'Gjakova',
+    'Ferizaj',
+    'Mitrovice',
+    'Deçan',
+    'Dragash',
+    'Drenas',
+    'Fushe Kosove',
+    'Istog',
+    'Kaçanik',
+    'Kamenica',
+    'Klina',
+    'Lipjan',
+    'Malisheva',
+    'Obiliq',
+    'Peja',
+    'Podujeva',
+    'Rahovec',
+    'Skenderaj',
+    'Suhareka',
+    'Shtërpcë',
+    'Shtime',
+    'Viti',
+    'Vushtrri'
+  ];
+  String? selectedValue;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -236,6 +272,43 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                   ),
             const Padding(
               padding: EdgeInsets.all(8.0),
+              child: Text("Requirements"),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: requirementsController,
+                style: const TextStyle(color: Colors.black54),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'requirements',
+                  hintStyle: const TextStyle(color: Colors.black45),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(
+                        color: primaryPurple,
+                        width: 1,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(
+                          color: primaryGrey.withOpacity(0.2), width: 1.5)),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: primaryPurple,
+                    width: 1,
+                  )),
+                ),
+              ),
+            ),
+            Text(
+              requirementsError,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text("Budget"),
             ),
             Padding(
@@ -261,9 +334,9 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                           color: primaryGrey.withOpacity(0.2), width: 1.5)),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(
-                    color: primaryPurple,
-                    width: 1,
-                  )),
+                        color: primaryPurple,
+                        width: 1,
+                      )),
                 ),
               ),
             ),
@@ -271,6 +344,58 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
               budgetError,
               style: const TextStyle(color: Colors.red),
             ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("City"),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width*0.1,),
+              child: Container(
+                padding:const EdgeInsets.all(10),
+                width: size.width*0.9,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    hint: Text(
+                      'Select City',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).hintColor,
+                      ),
+                    ),
+                    items: city
+                        .map((item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
+                        .toList(),
+                    value: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as String;
+                      });
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      height: 40,
+                      width: 140,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20,),
             GestureDetector(
               onTap: () {
                 final post = Post(
@@ -281,6 +406,8 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                   publisher: publisherController.text,
                   title: titleController.text,
                   createdAt: Timestamp.now(),
+                  requirements: requirementsController.text,
+                  city: selectedValue as String,
                 );
 
                 if (publisherController.text == '') {
@@ -292,7 +419,6 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                     publisherError = "";
                   });
                 }
-
                 if (descriptionController.text == "") {
                   setState(() {
                     descriptionError = "Please fill the field";
@@ -302,7 +428,6 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                     descriptionError = "";
                   });
                 }
-
                 if (titleController.text == "") {
                   setState(() {
                     titleError = "Please fill the field!";
@@ -321,7 +446,6 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                     paymentError = "";
                   });
                 }
-
                 if (deadlineController.text == "") {
                   setState(() {
                     deadlineError = "Please fill the field";
@@ -340,19 +464,28 @@ class _BecomeFreelancerState extends State<BecomeFreelancer> {
                     budgetError = "";
                   });
                 }
-
+                if(requirementsController.text==''){
+                  setState(() {
+                    requirementsError == "Please fill the field";
+                  });
+                }else{
+                  setState(() {
+                    budgetError="";
+                  });
+                }
                 if (budgetController.text != "" &&
                     deadlineController.text != "" &&
                     titleController.text != "" &&
                     descriptionController.text != "" &&
                     publisherController.text != "" &&
-                    payment_typeController.text != "") {
+                    payment_typeController.text != ""&&
+                    requirementsController.text !=""
+                ) {
                   createPost(post: post);
                 } else {
                   setState(() {
                     error = "Please fill the fields";
                   });
-                  print("Please fill the fields");
                 }
 
                 const snackBar = SnackBar(

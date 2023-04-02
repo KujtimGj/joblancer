@@ -30,7 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   badges: ^3.0.2
-  cloud_firestore: ^4.3.1
+  cloud_firestore: ^4.4.5
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.2.5
   firebase_core: ^2.4.1
@@ -46,6 +46,8 @@ dependencies:
   rounded_loading_button: ^2.1.0
   font_awesome_flutter: ^10.3.0
   connectivity_plus: ^3.0.2
+  flutter_svg: ^2.0.4
+  dropdown_button2: ^2.0.0
   
 
 dev_dependencies:

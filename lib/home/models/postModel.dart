@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
   String? id;
-  final String publisher, title, payment_type, description;
+  final String publisher, title, payment_type, description,requirements,city;
   final String deadline, budget;
   final Timestamp createdAt;
 
@@ -15,6 +15,8 @@ class Post {
     required this.publisher,
     required this.title,
     required this.createdAt,
+    required this.requirements,
+    required this.city
   });
 
   Map<String, dynamic> toJson() => {
@@ -26,6 +28,8 @@ class Post {
         'deadline': deadline,
         'budget': budget,
         'createdAt': createdAt,
+        'reqiurements':requirements,
+        'city':city,
       };
 
   static Post fromJson(Map<String, dynamic> json) => Post(
@@ -36,5 +40,7 @@ class Post {
         publisher: json['publisher'],
         title: json['title'],
         createdAt: json['createdAt'],
+        requirements: json['requirements'],
+        city: json['city'],
       );
 }

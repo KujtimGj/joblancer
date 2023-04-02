@@ -1,15 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:joblancer/const.dart';
-import 'package:joblancer/home/postModel.dart';
+import 'package:joblancer/home/components/freelances.dart';
 import 'package:joblancer/provider/sign_in_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'models/postModel.dart';
+
+
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({super.key,});
+
 
   @override
   State<Home> createState() => _HomeState();
@@ -17,6 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final zoomDrawerController = ZoomDrawerController();
+
 
   Future getData() async {
     final sp = context.read<SignInProvider>();
@@ -31,7 +35,8 @@ class _HomeState extends State<Home> {
 
   bool shouldPop = false;
 
-  int selectedIndex = 0;
+  int selectedIndex = 1;
+  int selectedNature = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +79,29 @@ class _HomeState extends State<Home> {
               color: Colors.black,
             ),
           ),
+          actions: [
+            // Padding(
+            //   padding: EdgeInsets.all(5.0),
+            //   child: CircleAvatar(
+            //     backgroundColor: Colors.grey[400],
+            //     maxRadius: 30,
+            //     minRadius: 25,
+            //     child: Icon(Icons.account_circle,size: 30,color: Colors.white,),
+            //   ),
+            // )
+            GestureDetector(
+              onTap: (){
+                sp.isSignedIn?null:Get.toNamed('/login');
+              },
+              child: sp.isSignedIn?Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(borderRadius: BorderRadius.circular(50),child: Image.network('${sp.imageUrl}'),),
+              ):Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.account_circle_rounded,size: 45,color: Colors.grey[400],),
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -122,258 +150,29 @@ class _HomeState extends State<Home> {
                     const VerticalDivider(
                       thickness: 1,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Text(
-                        "Search",
-                        style: TextStyle(
-                            color: primaryPurple,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700),
+                    GestureDetector(
+                      onTap: (){
+                        Get.toNamed('/freelancer');
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          "Search",
+                          style: TextStyle(
+                              color: primaryPurple,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
                     )
                   ],
                 ),
               ),
-              StreamBuilder<List<Post>>(
-                stream: readPosts(),
-                builder: ((context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Something went wrong! ${snapshot.error}");
-                  } else if (snapshot.hasData) {
-                    final posts = snapshot.data;
-                    return Container(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.toNamed("/details");
-                            },
-                            child: Container(
-                                // height: size.height * 0.3,
-                                width: MediaQuery.of(context).size.width,
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    // color: Colors.red,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: Colors.grey.withOpacity(0.3))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(30),
-                                              margin: const EdgeInsets.all(10),
-                                              decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.red),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  posts![index].publisher,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(posts[index].publisher)
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                children: const [
-                                                  Icon(Icons.bookmark_border),
-                                                  Text("Save")
-                                                ],
-                                              ),
-                                            ),
-                                            const VerticalDivider(
-                                              thickness: 1,
-                                              color: Colors.grey,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                children: const [
-                                                  Icon(Icons.send),
-                                                  Text("Apply")
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      height: 1,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            posts[index].title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 5),
-                                            child: Row(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.price_change,
-                                                      color: Colors.grey,
-                                                    ),
-                                                    Text(posts[index]
-                                                        .payment_type)
-                                                  ],
-                                                ),
-                                                const SizedBox(width: 20),
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.access_time_sharp,
-                                                      color: Colors.grey,
-                                                    ),
-                                                    Text(posts[index].deadline)
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Divider(
-                                      height: 1,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      child: Text(
-                                        posts[index].description,
-                                        style: const TextStyle(
-                                            overflow: TextOverflow.ellipsis),
-                                        maxLines: 3,
-                                      ),
-                                    ),
-                                    const Divider(height: 1),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Icon(Icons.attach_money),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text("Budget"),
-                                                  Text(posts[index].budget),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const VerticalDivider(
-                                                thickness: 1,
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Icon(Icons.access_time),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text("Deadline"),
-                                                  Text("20 days"),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const VerticalDivider(
-                                                thickness: 1,
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Icon(Icons.attach_money),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text("Budget"),
-                                                  Text("800\$"),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(color: primaryPurple),
-                    );
-                  }
-                }),
-              )
+                const Freelances(),
             ],
           ),
         ),
       ),
     );
   }
-
-  Stream<List<Post>> readPosts() => FirebaseFirestore.instance
-      .collection('posts')
-      .orderBy("createdAt", descending: true)
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Post.fromJson(doc.data())).toList());
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:joblancer/AuthUI/components/ordivider.dart';
 import 'package:joblancer/const.dart';
 import 'package:joblancer/main.dart';
 import 'package:joblancer/provider/internet_provider.dart';
@@ -9,6 +11,8 @@ import 'package:joblancer/utils/next_screen.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:provider/provider.dart';
 import 'package:joblancer/utils/snackbar.dart';
+
+import 'components/SocialIcons.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -36,30 +40,66 @@ class _LoginState extends State<Login> {
       body: SafeArea(
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 40, right: 40, top: 90, bottom: 30),
+              const EdgeInsets.only(left: 40, right: 40, top: 100, bottom: 60),
           child: Column(
             children: [
-              Flexible(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.1),
-                  child: Center(
-                    child: Container(
-                      height: size.height * 0.2,
-                      width: size.width * 0.55,
-                      decoration: BoxDecoration(
-                          color: primaryPurple,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: Text(
-                        "JOBLANCER",
-                        style:
-                            GoogleFonts.teko(color: Colors.white, fontSize: 30),
-                      )),
-                    ),
+              Container(
+                  height: size.height*0.2,
+                  width: size.width*0.45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image:const DecorationImage(
+                      image: AssetImage("assets/joblancerlogo.png"),
+                      fit: BoxFit.cover
+                    )
                   ),
                 ),
-              ),
+         const Padding(
+           padding: EdgeInsets.all(8.0),
+           child: Text("JOBLANCER",style: TextStyle(color: primaryPurple,fontSize: 30,fontWeight: FontWeight.w700),),
+         ),
+             SizedBox(height: size.height*0.1,),
+             //  Container(
+             //    margin:const EdgeInsets.symmetric(vertical: 30,horizontal: 10),
+             //    height: size.height*0.06,
+             //    width: size.width*0.8,
+             //    child: TextFormField(
+             //      decoration:const InputDecoration(
+             //        hintText: 'Email',
+             //        border: UnderlineInputBorder(),
+             //          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryPurple))
+             //      ),
+             //    ),
+             //  ),
+             //  Container(
+             //    margin:const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+             //    height: size.height*0.06,
+             //    width: size.width*0.8,
+             //    child: TextFormField(
+             //      obscureText: true,
+             //      decoration:const InputDecoration(
+             //        hintText: 'Password',
+             //        border: UnderlineInputBorder(),
+             //        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryPurple))
+             //      ),
+             //    ),
+             //  ),
+             // const Align(alignment: Alignment.centerRight,child: Text("Forgot password?",style: TextStyle(color: primaryPurple,fontSize: 16),)),
+             //  GestureDetector(
+             //    onTap: (){
+             //      Get.toNamed('/home');
+             //    },
+             //    child: Container(
+             //      margin: const EdgeInsets.symmetric(vertical: 35),
+             //      height: size.height*0.07,
+             //      width: size.width*0.9,
+             //      decoration: BoxDecoration(
+             //        color: primaryPurple,
+             //        borderRadius: BorderRadius.circular(20)
+             //      ),
+             //      child:const Center(child: Text("Log In",style:TextStyle(color: Colors.white,fontSize: 20))),
+             //    ),
+             //  ),
               RoundedLoadingButton(
                 width: size.width * 0.9,
                 controller: googleController,
@@ -79,7 +119,7 @@ class _LoginState extends State<Login> {
                       width: 15,
                     ),
                     Text(
-                      "Sign in with Gooogle",
+                      "Sign in with Google",
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     )
@@ -175,6 +215,27 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
+              // OrDivider(),
+              // SizedBox(height: size.height*0.05,),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SocalIcon(
+              //       iconSrc: "assets/google.svg",
+              //       press: () {
+              //         handleGoogleSignIn();
+              //       },
+              //     ),
+              //     SocalIcon(
+              //       iconSrc: "assets/twitter.svg",
+              //       press: () {},
+              //     ),
+              //     SocalIcon(
+              //       iconSrc: "assets/facebook.svg",
+              //       press: () {},
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

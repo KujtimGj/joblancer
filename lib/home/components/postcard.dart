@@ -30,12 +30,12 @@ class PostCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(30),
-                        margin: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.red),
-                      ),
+                      // Container(
+                      //   padding: const EdgeInsets.all(30),
+                      //   margin: const EdgeInsets.all(10),
+                      //   decoration: const BoxDecoration(
+                      //       shape: BoxShape.circle, color: Colors.red),
+                      // ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
